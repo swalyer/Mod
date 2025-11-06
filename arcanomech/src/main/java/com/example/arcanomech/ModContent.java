@@ -20,19 +20,23 @@ import net.minecraft.util.Identifier;
 public final class ModContent {
     public static final Block MANA_BATTERY = new Block(FabricBlockSettings.create().mapColor(MapColor.IRON_GRAY).strength(3.0F, 6.0F).requiresTool());
     public static final Item ETHER_CRYSTAL = new Item(new Item.Settings());
-    public static final ItemGroup GROUP = FabricItemGroup.builder(new Identifier(Arcanomech.MOD_ID, "main"))
-            .icon(new Supplier<ItemStack>() {
-                @Override
-                public ItemStack get() {
-                    return new ItemStack(ETHER_CRYSTAL);
-                }
-            })
-            .displayName(Text.translatable("itemGroup.arcanomech.main"))
-            .entries((displayContext, entries) -> {
-                entries.add(ETHER_CRYSTAL);
-                entries.add(MANA_BATTERY);
-            })
-            .build();
+    public static final ItemGroup GROUP = Registry.register(
+            Registries.ITEM_GROUP,
+            new Identifier(Arcanomech.MOD_ID, "main"),
+            FabricItemGroup.builder()
+                    .icon(new Supplier<ItemStack>() {
+                        @Override
+                        public ItemStack get() {
+                            return new ItemStack(ETHER_CRYSTAL);
+                        }
+                    })
+                    .displayName(Text.translatable("itemGroup.arcanomech.main"))
+                    .entries((displayContext, entries) -> {
+                        entries.add(ETHER_CRYSTAL);
+                        entries.add(MANA_BATTERY);
+                    })
+                    .build()
+    );
 
     private ModContent() {
     }
@@ -40,7 +44,6 @@ public final class ModContent {
     public static void registerAll() {
         registerBlock("mana_battery", MANA_BATTERY, new Item.Settings());
         registerItem("ether_crystal", ETHER_CRYSTAL);
-        Registry.register(Registries.ITEM_GROUP, new Identifier(Arcanomech.MOD_ID, "main"), GROUP);
     }
 
     private static void registerItem(@NotNull String name, @NotNull Item item) {
