@@ -1,13 +1,11 @@
 package com.example.arcanomech;
 
-import java.util.function.Supplier;
+import com.example.arcanomech.block.ManaBatteryBlock;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -18,18 +16,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public final class ModContent {
-    public static final Block MANA_BATTERY = new Block(FabricBlockSettings.create().mapColor(MapColor.IRON_GRAY).strength(3.0F, 6.0F).requiresTool());
+    public static final Block MANA_BATTERY = new ManaBatteryBlock();
     public static final Item ETHER_CRYSTAL = new Item(new Item.Settings());
     public static final ItemGroup GROUP = Registry.register(
             Registries.ITEM_GROUP,
             new Identifier(Arcanomech.MOD_ID, "main"),
             FabricItemGroup.builder()
-                    .icon(new Supplier<ItemStack>() {
-                        @Override
-                        public ItemStack get() {
-                            return new ItemStack(ETHER_CRYSTAL);
-                        }
-                    })
+                    .icon(() -> new ItemStack(ETHER_CRYSTAL))
                     .displayName(Text.translatable("itemGroup.arcanomech.main"))
                     .entries((displayContext, entries) -> {
                         entries.add(ETHER_CRYSTAL);
