@@ -1,0 +1,14 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Fabric run configs
+run/
+
+# macOS
+.DS_Store

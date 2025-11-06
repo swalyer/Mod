@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "arcanomech:ether_crystal"
+  },
+  "result": "arcanomech:ether_crystal",
+  "experience": 0.1,
+  "cookingtime": 100
+}
