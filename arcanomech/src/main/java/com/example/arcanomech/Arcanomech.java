@@ -5,6 +5,8 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.arcanomech.content.ModBlockEntities;
+
 import net.fabricmc.api.ModInitializer;
 
 public class Arcanomech implements ModInitializer {
@@ -14,6 +16,7 @@ public class Arcanomech implements ModInitializer {
     @Override
     public void onInitialize() {
         ModContent.registerAll();
+        ModBlockEntities.registerAll();
         LOGGER.info("Arcanomech loaded");
     }
 
