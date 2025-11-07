@@ -1,6 +1,16 @@
 {
   "itemGroup.arcanomech.main": "Arcanomech",
   "item.arcanomech.ether_crystal": "Ether Crystal",
+  "item.arcanomech.wrench": "Wrench",
+  "item.arcanomech.wrench.copied": "Configuration copied",
+  "item.arcanomech.wrench.paste": "Configuration applied",
+  "item.arcanomech.wrench.empty": "Wrench buffer is empty",
+  "item.arcanomech.wrench.mode": "Mode: %s",
+  "mode.arcanomech.disabled": "Disabled",
+  "mode.arcanomech.input": "Input",
+  "mode.arcanomech.output": "Output",
+  "mode.arcanomech.both": "Input/Output",
   "block.arcanomech.mana_battery": "Mana Battery",
-  "block.arcanomech.mana_cable": "Mana Cable"
+  "block.arcanomech.mana_cable": "Mana Cable",
+  "block.arcanomech.crusher": "Crusher"
 }
