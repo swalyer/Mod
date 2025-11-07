@@ -7,12 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import com.example.arcanomech.ModContent;
 import com.example.arcanomech.content.ModBlockEntities;
+import com.example.arcanomech.content.ModScreenHandlers;
 import com.example.arcanomech.debug.DebugConfig;
 import com.example.arcanomech.network.NetworkHandler;
 import com.example.arcanomech.recipe.ModRecipes;
+import com.example.arcanomech.workbench.WorkbenchRecipeManager;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.resource.ResourceType;
 
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
@@ -25,7 +29,9 @@ public class Arcanomech implements ModInitializer {
     public void onInitialize() {
         ModContent.registerAll();
         ModBlockEntities.registerAll();
+        ModScreenHandlers.registerAll();
         ModRecipes.registerAll();
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(WorkbenchRecipeManager.getInstance());
         NetworkHandler.registerServer();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
                 CommandManager.literal(MOD_ID)

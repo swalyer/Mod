@@ -1,0 +1,10 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 1200,
+  "work_time": 200,
+  "inputs": [
+    { "item": "minecraft:copper_ingot", "count": 3 },
+    { "item": "minecraft:redstone", "count": 2 }
+  ],
+  "output": { "item": "arcanomech:mana_battery", "count": 1 }
+}
