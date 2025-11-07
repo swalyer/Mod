@@ -1,0 +1,13 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 80,
+  "work_time": 100,
+  "inputs": [
+    { "item": "minecraft:book", "count": 1 }
+  ],
+  "output": {
+    "item": "arcanomech:aspect_shard",
+    "count": 1,
+    "nbt": "{Aspect:\"arcanomech:mind\"}"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 600,
+  "work_time": 120,
+  "inputs": [
+    { "item": "minecraft:iron_ingot", "count": 2 },
+    { "item": "minecraft:stick", "count": 1 }
+  ],
+  "output": { "item": "arcanomech:wrench", "count": 1 }
+}

@@ -1,6 +1,8 @@
 package com.example.arcanomech.recipe;
 
 import com.example.arcanomech.Arcanomech;
+import com.example.arcanomech.altar.AltarRecipe;
+import com.example.arcanomech.altar.AltarRecipeSerializer;
 
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -14,6 +16,21 @@ public final class ModRecipes {
             Registries.RECIPE_SERIALIZER,
             new Identifier(Arcanomech.MOD_ID, "crusher"),
             new CrusherRecipeSerializer()
+    );
+
+    public static final RecipeType<com.example.arcanomech.workbench.WorkbenchRecipe> WORKBENCH_RECIPE_TYPE = RecipeType.register(
+            Arcanomech.id("workbench"));
+    public static final RecipeSerializer<com.example.arcanomech.workbench.WorkbenchRecipe> WORKBENCH_SERIALIZER = Registry.register(
+            Registries.RECIPE_SERIALIZER,
+            new Identifier(Arcanomech.MOD_ID, "workbench"),
+            new com.example.arcanomech.workbench.WorkbenchRecipeSerializer()
+    );
+
+    public static final RecipeType<AltarRecipe> ALTAR_RECIPE_TYPE = RecipeType.register(Arcanomech.id("altar"));
+    public static final RecipeSerializer<AltarRecipe> ALTAR_SERIALIZER = Registry.register(
+            Registries.RECIPE_SERIALIZER,
+            new Identifier(Arcanomech.MOD_ID, "altar"),
+            new AltarRecipeSerializer()
     );
 
     private ModRecipes() {

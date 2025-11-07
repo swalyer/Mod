@@ -1,0 +1,7 @@
+{
+  "sources": [
+    { "item": "minecraft:oak_sapling", "yields": { "arcanomech:verdant": 1 } },
+    { "item": "minecraft:coal",        "yields": { "arcanomech:stone": 1, "arcanomech:spark": 1 } },
+    { "item": "minecraft:book",        "yields": { "arcanomech:mind": 1 } }
+  ]
+}

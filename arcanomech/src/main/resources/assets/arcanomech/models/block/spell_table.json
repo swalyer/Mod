@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "arcanomech:block/spell_table",
+    "down": "arcanomech:block/spell_table",
+    "up": "arcanomech:block/spell_table",
+    "north": "arcanomech:block/spell_table",
+    "south": "arcanomech:block/spell_table",
+    "west": "arcanomech:block/spell_table",
+    "east": "arcanomech:block/spell_table"
+  }
+}
