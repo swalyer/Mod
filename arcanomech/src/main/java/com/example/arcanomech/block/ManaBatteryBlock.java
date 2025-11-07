@@ -54,10 +54,14 @@ public class ManaBatteryBlock extends BlockWithEntity {
         if (isCrystal) {
             if (!world.isClient) {
                 int inserted = battery.insert(TRANSFER_PER_USE, false);
-                if (inserted > 0 && !player.getAbilities().creativeMode) {
-                    stack.decrement(1);
+                if (inserted > 0) {
+                    if (!player.getAbilities().creativeMode) {
+                        stack.decrement(1);
+                    }
+                    player.sendMessage(Text.literal("Mana: " + battery.getMana() + "/" + battery.getCapacity()), true);
+                } else {
+                    player.sendMessage(Text.literal("Mana Battery is full"), true);
                 }
-                player.sendMessage(Text.literal("Mana: " + battery.getMana() + "/" + battery.getCapacity()), true);
             }
             return ActionResult.SUCCESS;
         }
