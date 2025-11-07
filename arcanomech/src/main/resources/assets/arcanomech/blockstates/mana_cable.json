@@ -1,7 +1,45 @@
 {
-  "variants": {
-    "": {
-      "model": "arcanomech:block/mana_cable"
+  "multipart": [
+    {
+      "apply": {
+        "model": "arcanomech:block/mana_cable_core"
+      }
+    },
+    {
+      "when": { "north": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_north"
+      }
+    },
+    {
+      "when": { "south": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_south"
+      }
+    },
+    {
+      "when": { "east": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_east"
+      }
+    },
+    {
+      "when": { "west": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_west"
+      }
+    },
+    {
+      "when": { "up": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_up"
+      }
+    },
+    {
+      "when": { "down": true },
+      "apply": {
+        "model": "arcanomech:block/mana_cable_arm_down"
+      }
     }
-  }
+  ]
 }

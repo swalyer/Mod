@@ -26,6 +26,10 @@ public enum IOMode {
         return ordinal();
     }
 
+    public IOMode next() {
+        return values()[(ordinal() + 1) % values().length];
+    }
+
     public static IOMode fromId(int id) {
         IOMode[] values = values();
         if (id < 0 || id >= values.length) {
