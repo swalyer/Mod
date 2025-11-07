@@ -14,11 +14,12 @@ import com.example.arcanomech.energy.ManaStorage;
 import com.example.arcanomech.util.ImplementedInventory;
 import com.example.arcanomech.recipe.ModRecipes;
 
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemScatterer;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeManager;

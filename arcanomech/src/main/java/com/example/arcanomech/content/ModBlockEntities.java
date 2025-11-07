@@ -22,7 +22,6 @@ public final class ModBlockEntities {
     public static BlockEntityType<ManaCableBlockEntity> MANA_CABLE;
     public static BlockEntityType<CrusherBlockEntity> CRUSHER;
     public static BlockEntityType<ArcaneWorkbenchBlockEntity> ARCANE_WORKBENCH;
-    public static BlockEntityType<ArcaneWorkbenchBlockEntity> ARCANE_WORKBENCH;
     public static BlockEntityType<SpellTableBlockEntity> SPELL_TABLE;
     public static BlockEntityType<AltarCoreBlockEntity> ALTAR_CORE;
     public static BlockEntityType<PedestalBlockEntity> ALTAR_PEDESTAL;

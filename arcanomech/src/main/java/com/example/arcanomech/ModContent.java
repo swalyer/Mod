@@ -33,13 +33,11 @@ public final class ModContent {
     public static final Block MANA_CABLE = new ManaCableBlock();
     public static final Block CRUSHER = new CrusherBlock();
     public static final Block ARCANE_WORKBENCH = new ArcaneWorkbenchBlock();
-    public static final Block ARCANE_WORKBENCH = new ArcaneWorkbenchBlock();
     public static final Block SPELL_TABLE = new SpellTableBlock(FabricBlockSettings.create().mapColor(MapColor.STONE_GRAY).strength(2.5F));
     public static final Block ALTAR_CORE = new AltarCoreBlock(FabricBlockSettings.create().mapColor(MapColor.IRON_GRAY).strength(3.0F));
-    public static final Block ALTAR_PEDESTAL = new PedestalBlock(FabricBlockSettings.create().mapColor(MapColor.QUARTZ).strength(2.0F));
+    public static final Block ALTAR_PEDESTAL = new PedestalBlock(FabricBlockSettings.create().mapColor(MapColor.DARK_AQUA).strength(2.0F));
     public static final Item ETHER_CRYSTAL = new Item(new Item.Settings());
     public static final Item WRENCH = new WrenchItem(new Item.Settings().maxCount(1));
-    public static final Item ARCANE_WAND = new ArcaneWandItem(new Item.Settings().maxCount(1));
     public static final Item ARCANE_WAND = new ArcaneWandItem(new Item.Settings().maxCount(1));
     public static final Item ARCANE_WAND_T2 = new ArcaneWandItem(new Item.Settings().maxCount(1));
     public static final Item BLANK_RUNE = new Item(new Item.Settings());

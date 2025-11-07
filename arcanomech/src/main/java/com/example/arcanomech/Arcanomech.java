@@ -5,11 +5,9 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.arcanomech.ModContent;
 import com.example.arcanomech.content.ModBlockEntities;
 import com.example.arcanomech.content.ModScreenHandlers;
 import com.example.arcanomech.debug.DebugConfig;
-import com.example.arcanomech.aspects.AspectRegistry;
 import com.example.arcanomech.aspects.AspectRegistry;
 import com.example.arcanomech.aspects.AspectSourceManager;
 import com.example.arcanomech.altar.AltarStructureManager;
