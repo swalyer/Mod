@@ -22,12 +22,10 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 }
 
-/** 1) Сначала даём Loom создать client/server */
 loom {
     splitEnvironmentSourceSets()
 }
 
-/** 2) Объявляем ТОЛЬКО testmod (client/server трогать не нужно) */
 sourceSets {
     main {
         java.srcDir "src/main/java"

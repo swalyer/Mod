@@ -11,7 +11,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentState.Type;
 
 public final class Cooldowns {
     private static final String STATE_ID = "arcanomech_spell_cooldowns";
@@ -56,7 +55,8 @@ public final class Cooldowns {
         }
 
         private static SpellCooldownState get(ServerWorld world) {
-            return world.getPersistentStateManager().getOrCreate(TYPE, SpellCooldownState::new, STATE_ID);
+            return world.getPersistentStateManager()
+                    .getOrCreate(SpellCooldownState::fromNbt, SpellCooldownState::new, STATE_ID);
         }
 
         private int getRemaining(UUID playerId, Identifier id, long now) {
@@ -110,7 +110,5 @@ public final class Cooldowns {
             }
             return state;
         }
-
-        private static final Type<SpellCooldownState> TYPE = new Type<>(SpellCooldownState::new, SpellCooldownState::fromNbt, null);
     }
 }

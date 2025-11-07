@@ -9,7 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.ProjectileUtil;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
