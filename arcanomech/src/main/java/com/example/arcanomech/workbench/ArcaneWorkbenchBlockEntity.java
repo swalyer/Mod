@@ -24,7 +24,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemScatterer;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -58,10 +58,7 @@ public class ArcaneWorkbenchBlockEntity extends BlockEntity implements Implement
     public static final int OUTPUT_SLOT = 7;
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(OUTPUT_SLOT + 1, ItemStack.EMPTY);
-    private final SideConfig sideConfig = SideConfig.builder()
-            .with(Direction.UP, IOMode.INPUT)
-            .with(Direction.DOWN, IOMode.OUTPUT)
-            .build();
+    private final SideConfig sideConfig = SideConfig.all(IOMode.DISABLED);
     private final PropertyDelegate properties = new PropertyDelegate() {
         @Override
         public int size() {

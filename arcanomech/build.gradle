@@ -22,29 +22,58 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 }
 
+/** 1) Сначала даём Loom создать client/server */
 loom {
     splitEnvironmentSourceSets()
+}
 
+/** 2) Объявляем ТОЛЬКО testmod (client/server трогать не нужно) */
+sourceSets {
+    main {
+        java.srcDir "src/main/java"
+        resources.srcDir "src/main/resources"
+    }
+    testmod {
+        java.srcDir "src/testmod/java"
+        resources.srcDir "src/testmod/resources"
+        // видеть общий код:
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath  += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
+configurations {
+    testmodImplementation.extendsFrom implementation
+}
+
+/** 3) Теперь можно сослаться на testmod в runs (после его объявления) */
+loom {
     runs {
-        gametestServer {
+        gametest {
             server()
-            name "Game Test Server"
-            vmArgs "-Dfabric-api.gametest"
-            runDir "build/gametest"
+            name "Game Test"
+            source sourceSets.testmod
+            vmArg "-Dfabric-api.gametest=true"
         }
     }
 }
 
+/** 4) Страховка от дублей ресурсов и явное исключение fabric.mod.json вне main */
+sourceSets.named("client") {
+    resources { exclude("fabric.mod.json") }
+}
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
     withSourcesJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 17
+    options.encoding = "UTF-8"
+    options.release = 17
 }
 
 jar {

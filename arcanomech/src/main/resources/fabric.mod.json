@@ -5,15 +5,8 @@
   "name": "Arcanomech",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "com.example.arcanomech.Arcanomech"
-    ],
-    "client": [
-      "com.example.arcanomech.client.ArcanomechClient"
-    ],
-    "fabric-gametest": [
-      "com.example.arcanomech.gametest.ManaNetworkGameTests"
-    ]
+    "main": ["com.example.arcanomech.Arcanomech"],
+    "client": ["com.example.arcanomech.client.ArcanomechClient"]
   },
   "depends": {
     "fabricloader": ">=0.15.11",

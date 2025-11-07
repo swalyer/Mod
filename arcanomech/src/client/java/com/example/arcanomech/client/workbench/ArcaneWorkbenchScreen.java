@@ -1,8 +1,8 @@
 package com.example.arcanomech.client.workbench;
 
 import com.example.arcanomech.Arcanomech;
-import com.example.arcanomech.workbench.ArcaneWorkbenchScreenHandler;
 
+import com.example.arcanomech.workbench.ArcaneWorkbenchScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;

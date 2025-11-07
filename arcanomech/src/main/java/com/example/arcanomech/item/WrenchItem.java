@@ -3,16 +3,9 @@ package com.example.arcanomech.item;
 import com.example.arcanomech.energy.IOMode;
 import com.example.arcanomech.energy.SideConfig;
 import com.example.arcanomech.energy.SideConfigHolder;
-import com.example.arcanomech.energy.SideRaycast;
-import com.example.arcanomech.network.NetworkHandler;
+import com.example.arcanomech.platform.ClientBridge;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -21,7 +14,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -37,7 +29,10 @@ public class WrenchItem extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
         if (world.isClient) {
-            handleClientUse(context);
+            BlockPos pos = context.getBlockPos();
+            Direction side = context.getSide();
+            Hand hand = context.getHand();
+            ClientBridge.INSTANCE.sendWrenchUse(pos, side, hand);
             return ActionResult.SUCCESS;
         }
         return ActionResult.CONSUME;
@@ -100,24 +95,8 @@ public class WrenchItem extends Item {
         if (raw.length == 0) {
             return null;
         }
-        SideConfig config = SideConfig.all(IOMode.DISABLED);
+        SideConfig config = SideConfig.all(com.example.arcanomech.energy.IOMode.DISABLED);
         config.readFromIds(raw);
         return config;
-    }
-
-    @Environment(EnvType.CLIENT)
-    private static void handleClientUse(ItemUsageContext context) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
-        if (player == null) {
-            return;
-        }
-        BlockPos pos = context.getBlockPos();
-        BlockHitResult hit = context.getHitResult() instanceof BlockHitResult blockHit ? blockHit : null;
-        Direction side = SideRaycast.pickSide(player, pos, hit);
-        boolean shift = Screen.hasShiftDown();
-        boolean alt = Screen.hasAltDown();
-        Hand hand = context.getHand();
-        ClientPlayNetworking.send(NetworkHandler.WRENCH_PACKET, NetworkHandler.createWrenchBuf(pos, side, shift, alt, hand));
     }
 }

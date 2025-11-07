@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "arcanomech_testmod",
+  "version": "0.1.0",
+  "name": "Arcanomech Testmod",
+  "entrypoints": {
+    "fabric-gametest": ["com.example.arcanomech.gametest.ManaNetworkGameTests"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "1.20.1",
+    "fabric-api": "*"
+  }
+}
