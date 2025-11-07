@@ -1,8 +1,9 @@
 package com.example.arcanomech.content;
 
 import com.example.arcanomech.Arcanomech;
-import com.example.arcanomech.block.ManaBatteryBlockEntity;
 import com.example.arcanomech.ModContent;
+import com.example.arcanomech.block.ManaBatteryBlockEntity;
+import com.example.arcanomech.block.ManaCableBlockEntity;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
@@ -12,6 +13,7 @@ import net.minecraft.util.Identifier;
 
 public final class ModBlockEntities {
     public static BlockEntityType<ManaBatteryBlockEntity> MANA_BATTERY;
+    public static BlockEntityType<ManaCableBlockEntity> MANA_CABLE;
 
     private ModBlockEntities() {
     }
@@ -21,6 +23,11 @@ public final class ModBlockEntities {
                 Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(Arcanomech.MOD_ID, "mana_battery"),
                 FabricBlockEntityTypeBuilder.create(ManaBatteryBlockEntity::new, ModContent.MANA_BATTERY).build(null)
+        );
+        MANA_CABLE = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                new Identifier(Arcanomech.MOD_ID, "mana_cable"),
+                FabricBlockEntityTypeBuilder.create(ManaCableBlockEntity::new, ModContent.MANA_CABLE).build(null)
         );
     }
 }
