@@ -3,6 +3,8 @@ package com.example.arcanomech;
 import com.example.arcanomech.block.CrusherBlock;
 import com.example.arcanomech.block.ManaBatteryBlock;
 import com.example.arcanomech.block.ManaCableBlock;
+import com.example.arcanomech.magic.ArcaneWandItem;
+import com.example.arcanomech.workbench.ArcaneWorkbenchBlock;
 import com.example.arcanomech.item.WrenchItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +24,10 @@ public final class ModContent {
     public static final Block MANA_BATTERY = new ManaBatteryBlock();
     public static final Block MANA_CABLE = new ManaCableBlock();
     public static final Block CRUSHER = new CrusherBlock();
+    public static final Block ARCANE_WORKBENCH = new ArcaneWorkbenchBlock();
     public static final Item ETHER_CRYSTAL = new Item(new Item.Settings());
     public static final Item WRENCH = new WrenchItem(new Item.Settings().maxCount(1));
+    public static final Item ARCANE_WAND = new ArcaneWandItem(new Item.Settings().maxCount(1));
     public static final ItemGroup GROUP = Registry.register(
             Registries.ITEM_GROUP,
             new Identifier(Arcanomech.MOD_ID, "main"),
@@ -36,6 +40,8 @@ public final class ModContent {
                         entries.add(MANA_CABLE);
                         entries.add(CRUSHER);
                         entries.add(WRENCH);
+                        entries.add(ARCANE_WORKBENCH);
+                        entries.add(ARCANE_WAND);
                     })
                     .build()
     );
@@ -47,8 +53,10 @@ public final class ModContent {
         registerBlock("mana_battery", MANA_BATTERY, new Item.Settings());
         registerBlock("mana_cable", MANA_CABLE, new Item.Settings());
         registerBlock("crusher", CRUSHER, new Item.Settings());
+        registerBlock("arcane_workbench", ARCANE_WORKBENCH, new Item.Settings());
         registerItem("ether_crystal", ETHER_CRYSTAL);
         registerItem("wrench", WRENCH);
+        registerItem("arcane_wand", ARCANE_WAND);
     }
 
     private static void registerItem(@NotNull String name, @NotNull Item item) {

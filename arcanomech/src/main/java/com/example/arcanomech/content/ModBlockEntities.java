@@ -5,6 +5,7 @@ import com.example.arcanomech.ModContent;
 import com.example.arcanomech.block.CrusherBlockEntity;
 import com.example.arcanomech.block.ManaBatteryBlockEntity;
 import com.example.arcanomech.block.ManaCableBlockEntity;
+import com.example.arcanomech.workbench.ArcaneWorkbenchBlockEntity;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
@@ -16,6 +17,7 @@ public final class ModBlockEntities {
     public static BlockEntityType<ManaBatteryBlockEntity> MANA_BATTERY;
     public static BlockEntityType<ManaCableBlockEntity> MANA_CABLE;
     public static BlockEntityType<CrusherBlockEntity> CRUSHER;
+    public static BlockEntityType<ArcaneWorkbenchBlockEntity> ARCANE_WORKBENCH;
 
     private ModBlockEntities() {
     }
@@ -35,6 +37,11 @@ public final class ModBlockEntities {
                 Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(Arcanomech.MOD_ID, "crusher"),
                 FabricBlockEntityTypeBuilder.create(CrusherBlockEntity::new, ModContent.CRUSHER).build(null)
+        );
+        ARCANE_WORKBENCH = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                new Identifier(Arcanomech.MOD_ID, "arcane_workbench"),
+                FabricBlockEntityTypeBuilder.create(ArcaneWorkbenchBlockEntity::new, ModContent.ARCANE_WORKBENCH).build(null)
         );
     }
 }

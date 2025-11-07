@@ -1,0 +1,10 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 1000,
+  "work_time": 180,
+  "inputs": [
+    { "item": "minecraft:amethyst_shard", "count": 2 },
+    { "item": "minecraft:glowstone_dust", "count": 1 }
+  ],
+  "output": { "item": "arcanomech:ether_crystal", "count": 2 }
+}
