@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "all": "arcanomech:block/mana_cable_core"
+    "all": "minecraft:block/light_blue_concrete"
   },
   "elements": [
     {

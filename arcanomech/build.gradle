@@ -24,6 +24,15 @@ dependencies {
 
 loom {
     splitEnvironmentSourceSets()
+
+    runs {
+        gametestServer {
+            server()
+            name "Game Test Server"
+            vmArgs "-Dfabric-api.gametest"
+            runDir "build/gametest"
+        }
+    }
 }
 
 java {
