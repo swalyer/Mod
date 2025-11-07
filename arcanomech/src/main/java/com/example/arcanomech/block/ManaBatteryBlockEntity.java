@@ -75,6 +75,16 @@ public class ManaBatteryBlockEntity extends BlockEntity implements ManaStorage, 
     }
 
     @Override
+    public void onSideConfigChanged() {
+        SideConfigHolder.super.onSideConfigChanged();
+        sync();
+    }
+
+    public void setMana(int amount) {
+        updateMana(amount);
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt(MANA_KEY, mana);

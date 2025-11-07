@@ -1,0 +1,41 @@
+package com.example.arcanomech.recipe;
+
+import com.example.arcanomech.energy.Balance;
+
+import com.google.gson.JsonObject;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
+
+public class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe> {
+    @Override
+    public CrusherRecipe read(Identifier id, JsonObject json) {
+        Ingredient ingredient = Ingredient.fromJson(JsonHelper.getObject(json, "ingredient"));
+        JsonObject resultObject = JsonHelper.getObject(json, "result");
+        ItemStack output = net.minecraft.recipe.ShapedRecipe.outputFromJson(resultObject);
+        int manaPerTick = JsonHelper.getInt(json, "mana_per_tick", Balance.CRUSHER_MANA_PER_TICK);
+        int processingTime = JsonHelper.getInt(json, "processing_time", Balance.CRUSHER_WORK_TIME);
+        return new CrusherRecipe(id, ingredient, output, manaPerTick, processingTime);
+    }
+
+    @Override
+    public CrusherRecipe read(Identifier id, PacketByteBuf buf) {
+        Ingredient ingredient = Ingredient.fromPacket(buf);
+        ItemStack output = buf.readItemStack();
+        int manaPerTick = buf.readVarInt();
+        int processingTime = buf.readVarInt();
+        return new CrusherRecipe(id, ingredient, output, manaPerTick, processingTime);
+    }
+
+    @Override
+    public void write(PacketByteBuf buf, CrusherRecipe recipe) {
+        recipe.getIngredient().write(buf);
+        buf.writeItemStack(recipe.getResult());
+        buf.writeVarInt(recipe.getManaPerTick());
+        buf.writeVarInt(recipe.getProcessingTime());
+    }
+}

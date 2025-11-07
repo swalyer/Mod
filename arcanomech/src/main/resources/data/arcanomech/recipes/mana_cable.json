@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    " C ",
+    "III"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "C": { "item": "arcanomech:ether_crystal" }
+  },
+  "result": {
+    "item": "arcanomech:mana_cable",
+    "count": 6
+  }
+}

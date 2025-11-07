@@ -25,21 +25,47 @@ public final class SideConfig {
         modes[direction.ordinal()] = mode;
     }
 
-    public void writeNbt(NbtCompound nbt, String key) {
+    public IOMode cycle(Direction direction) {
+        IOMode next = get(direction).next();
+        set(direction, next);
+        return next;
+    }
+
+    public void setAll(IOMode mode) {
+        Arrays.fill(modes, mode);
+    }
+
+    public void copyFrom(SideConfig other) {
+        if (other == null) {
+            return;
+        }
+        for (Direction direction : Direction.values()) {
+            set(direction, other.get(direction));
+        }
+    }
+
+    public int[] toIdArray() {
         int[] raw = new int[SIDES];
         for (int i = 0; i < SIDES; i++) {
             raw[i] = modes[i].getId();
         }
-        nbt.putIntArray(key, raw);
+        return raw;
     }
 
-    public void readNbt(NbtCompound nbt, String key) {
-        int[] raw = nbt.getIntArray(key);
+    public void readFromIds(int[] raw) {
         if (raw.length != SIDES) {
             return;
         }
         for (int i = 0; i < SIDES; i++) {
             modes[i] = IOMode.fromId(raw[i]);
         }
+    }
+
+    public void writeNbt(NbtCompound nbt, String key) {
+        nbt.putIntArray(key, toIdArray());
+    }
+
+    public void readNbt(NbtCompound nbt, String key) {
+        readFromIds(nbt.getIntArray(key));
     }
 }

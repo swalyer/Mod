@@ -1,0 +1,12 @@
+{
+  "type": "arcanomech:crusher",
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "result": {
+    "item": "minecraft:gravel",
+    "count": 1
+  },
+  "mana_per_tick": 20,
+  "processing_time": 200
+}

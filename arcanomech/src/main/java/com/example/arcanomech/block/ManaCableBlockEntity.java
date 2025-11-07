@@ -2,7 +2,9 @@ package com.example.arcanomech.block;
 
 import java.util.Optional;
 
+import com.example.arcanomech.Arcanomech;
 import com.example.arcanomech.content.ModBlockEntities;
+import com.example.arcanomech.debug.DebugConfig;
 import com.example.arcanomech.energy.Balance;
 import com.example.arcanomech.energy.IOMode;
 import com.example.arcanomech.energy.ManaApi;
@@ -10,6 +12,7 @@ import com.example.arcanomech.energy.ManaStorage;
 import com.example.arcanomech.energy.SideConfig;
 import com.example.arcanomech.energy.SideConfigHolder;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -29,6 +32,8 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
     private int mana;
     private int pullIndex;
     private int pushIndex;
+    private int debugTicks;
+    private int debugMoved;
 
     public ManaCableBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MANA_CABLE, pos, state);
@@ -39,6 +44,14 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
             return;
         }
         cable.tickServer(world);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (world != null && !world.isClient) {
+            refreshConnections();
+        }
     }
 
     @Override
@@ -90,6 +103,12 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
     }
 
     @Override
+    public void onSideConfigChanged() {
+        SideConfigHolder.super.onSideConfigChanged();
+        refreshConnections();
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt(MANA_KEY, mana);
@@ -118,6 +137,7 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
     private void tickServer(World world) {
         pull(world);
         push(world);
+        flushDebug(world);
     }
 
     private void pull(World world) {
@@ -142,6 +162,7 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
             int moved = ManaApi.move(entry.storage(), this, Math.min(remaining, Balance.CABLE_IO));
             if (moved > 0) {
                 remaining -= moved;
+                recordTransfer(moved);
             }
         }
         pullIndex = (pullIndex + 1) % DIRECTIONS.length;
@@ -178,6 +199,7 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
             int moved = ManaApi.move(this, target, Math.min(available, Balance.CABLE_IO));
             if (moved > 0) {
                 available -= moved;
+                recordTransfer(moved);
             }
         }
         pushIndex = (pushIndex + 1) % DIRECTIONS.length;
@@ -195,6 +217,46 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
     private void sync() {
         if (world != null && !world.isClient) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+        }
+    }
+
+    private void refreshConnections() {
+        if (world == null) {
+            return;
+        }
+        BlockState state = getCachedState();
+        if (!(state.getBlock() instanceof ManaCableBlock block)) {
+            return;
+        }
+        BlockState updated = block.updateConnections(world, pos, state);
+        if (!updated.equals(state)) {
+            world.setBlockState(pos, updated, Block.NOTIFY_LISTENERS);
+        } else {
+            world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+        }
+        world.updateNeighborsAlways(pos, state.getBlock());
+    }
+
+    private void recordTransfer(int amount) {
+        if (amount <= 0 || !DebugConfig.isEnabled()) {
+            return;
+        }
+        debugMoved += amount;
+    }
+
+    private void flushDebug(World world) {
+        if (!DebugConfig.isEnabled()) {
+            debugTicks = 0;
+            debugMoved = 0;
+            return;
+        }
+        debugTicks++;
+        if (debugTicks >= 20) {
+            if (debugMoved > 0) {
+                Arcanomech.LOGGER.info("[Mana Debug] Cable {} moved {} mU", pos, debugMoved);
+            }
+            debugTicks = 0;
+            debugMoved = 0;
         }
     }
 }
