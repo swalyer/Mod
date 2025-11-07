@@ -16,6 +16,14 @@ public final class ModRecipes {
             new CrusherRecipeSerializer()
     );
 
+    public static final RecipeType<com.example.arcanomech.workbench.WorkbenchRecipe> WORKBENCH_RECIPE_TYPE = RecipeType.register(
+            Arcanomech.id("workbench"));
+    public static final RecipeSerializer<com.example.arcanomech.workbench.WorkbenchRecipe> WORKBENCH_SERIALIZER = Registry.register(
+            Registries.RECIPE_SERIALIZER,
+            new Identifier(Arcanomech.MOD_ID, "workbench"),
+            new com.example.arcanomech.workbench.WorkbenchRecipeSerializer()
+    );
+
     private ModRecipes() {
     }
 
