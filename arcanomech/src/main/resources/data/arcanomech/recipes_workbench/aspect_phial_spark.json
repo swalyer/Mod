@@ -1,0 +1,14 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 120,
+  "work_time": 100,
+  "inputs": [
+    { "item": "minecraft:coal", "count": 2 },
+    { "item": "minecraft:glass_bottle", "count": 1 }
+  ],
+  "output": {
+    "item": "arcanomech:aspect_phial",
+    "count": 1,
+    "nbt": "{Aspect:\"arcanomech:spark\"}"
+  }
+}

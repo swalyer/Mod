@@ -20,20 +20,28 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
+    private final Inventory inventory;
+    private final PropertyDelegate properties;
     @Nullable
     private final ArcaneWorkbenchBlockEntity workbench;
     private final Inventory inventory;
     private final PropertyDelegate properties;
 
+    public ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, ArcaneWorkbenchBlockEntity workbench) {
+        this(syncId, playerInventory, workbench, workbench, workbench.getPropertyDelegate());
     public ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory inv) {
         this(syncId, inv, (ArcaneWorkbenchBlockEntity) null);
     }
 
     public ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory inv, PacketByteBuf buf) {
         this(syncId, inv, resolveBlockEntity(inv, buf.readBlockPos()));
+    public ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        this(syncId, playerInventory, resolveBlockEntity(playerInventory, buf.readBlockPos()));
     }
 
     public ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory inv, @Nullable ArcaneWorkbenchBlockEntity workbench) {
+    private ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, @Nullable ArcaneWorkbenchBlockEntity workbench,
+                                         Inventory inventory, PropertyDelegate properties) {
         super(ModScreenHandlers.ARCANE_WORKBENCH, syncId);
         this.workbench = workbench;
         if (workbench != null) {
@@ -56,6 +64,11 @@ public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
             return null;
         }
         return be;
+        this.inventory = inventory;
+        this.properties = properties;
+        inventory.onOpen(playerInventory.player);
+        addSlots(playerInventory);
+        addProperties(properties);
     }
 
     private void addSlots(PlayerInventory playerInventory) {
@@ -67,15 +80,38 @@ public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
         }
         addSlot(new WandSlot(inventory, ArcaneWorkbenchBlockEntity.WAND_SLOT, 134, 53));
         addSlot(new OutputSlot(inventory, ArcaneWorkbenchBlockEntity.OUTPUT_SLOT, 134, 27));
+
+        int playerStartY = 84;
         int y = 84;
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
+                addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, playerStartY + row * 18));
                 addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, y + row * 18));
             }
         }
         for (int column = 0; column < 9; column++) {
+            addSlot(new Slot(playerInventory, column, 8 + column * 18, playerStartY + 58));
             addSlot(new Slot(playerInventory, column, 8 + column * 18, y + 58));
         }
+    }
+
+    private static ArcaneWorkbenchBlockEntity resolveBlockEntity(PlayerInventory playerInventory, BlockPos pos) {
+        if (playerInventory.player == null) {
+            return null;
+        }
+        var world = playerInventory.player.getWorld();
+        if (world == null) {
+            return null;
+        }
+        if (!(world.getBlockEntity(pos) instanceof ArcaneWorkbenchBlockEntity blockEntity)) {
+            return null;
+        }
+        return blockEntity;
+    }
+
+    private ArcaneWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, @Nullable ArcaneWorkbenchBlockEntity workbench) {
+        this(syncId, playerInventory, workbench, workbench != null ? workbench : new SimpleInventory(ArcaneWorkbenchBlockEntity.OUTPUT_SLOT + 1),
+                workbench != null ? workbench.getPropertyDelegate() : new ArrayPropertyDelegate(4));
     }
 
     @Override
@@ -85,18 +121,21 @@ public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
+        ItemStack newStack = ItemStack.EMPTY;
         ItemStack result = ItemStack.EMPTY;
         Slot slot = getSlot(index);
         if (slot == null || !slot.hasStack()) {
             return ItemStack.EMPTY;
         }
         ItemStack original = slot.getStack();
+        newStack = original.copy();
         result = original.copy();
         int containerSize = inventory.size();
         if (index == ArcaneWorkbenchBlockEntity.OUTPUT_SLOT) {
             if (!insertItem(original, containerSize, slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
+            slot.onQuickTransfer(original, newStack);
             slot.onQuickTransfer(original, result);
         } else if (index >= containerSize) {
             if (original.getItem() instanceof ManaToolItem) {
@@ -118,10 +157,12 @@ public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
         } else {
             slot.markDirty();
         }
+        if (original.getCount() == newStack.getCount()) {
         if (original.getCount() == result.getCount()) {
             return ItemStack.EMPTY;
         }
         slot.onTakeItem(player, original);
+        return newStack;
         return result;
     }
 
@@ -143,23 +184,29 @@ public class ArcaneWorkbenchScreenHandler extends ScreenHandler {
 
     private static class OutputSlot extends Slot {
         public OutputSlot(Inventory inventory, int index, int x, int y) {
-            super(inventory, index, x, y);
-        }
-
-        @Override
-        public boolean canInsert(ItemStack stack) {
-            return false;
-        }
-    }
-
-    private static class WandSlot extends Slot {
+    private class WandSlot extends Slot {
         public WandSlot(Inventory inventory, int index, int x, int y) {
             super(inventory, index, x, y);
         }
 
         @Override
         public boolean canInsert(ItemStack stack) {
+            return false;
             return stack.getItem() instanceof ManaToolItem;
+        }
+    }
+
+    private static class WandSlot extends Slot {
+        public WandSlot(Inventory inventory, int index, int x, int y) {
+    private static class OutputSlot extends Slot {
+        public OutputSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            return stack.getItem() instanceof ManaToolItem;
+            return false;
         }
     }
 }

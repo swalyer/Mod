@@ -14,9 +14,11 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
+
 public class ArcaneWandItem extends Item implements ManaToolItem {
     private static final String MANA_KEY = "Mana";
     private static final String SPELL_KEY = "Spell";
+    private static final String COOLDOWN_KEY = "Cooldown";
 
     public ArcaneWandItem(Settings settings) {
         super(settings);
@@ -25,23 +27,51 @@ public class ArcaneWandItem extends Item implements ManaToolItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (!world.isClient) {
-            int mana = getMana(stack);
-            user.sendMessage(Text.translatable("tooltip.arcanomech.mana_status", mana, getCapacity(stack)), true);
+        if (hand == Hand.OFF_HAND) {
+            return TypedActionResult.pass(stack);
         }
-        return TypedActionResult.success(stack, world.isClient);
+        if (world.isClient) {
+            return TypedActionResult.success(stack, true);
+        }
+        String spellKey = getSelectedSpell(stack);
+        if (spellKey.isEmpty()) {
+            user.sendMessage(Text.translatable("message.arcanomech.spell.none"), true);
+            return TypedActionResult.pass(stack);
+        }
+        SpellId id = SpellId.of(spellKey);
+        SpellContext context = new SpellContext(world, user, stack, CastingSource.WAND);
+        boolean cast = SpellRuntime.cast(id, context);
+        return cast ? TypedActionResult.consume(stack) : TypedActionResult.pass(stack);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip) {
         tooltip.add(Text.translatable("tooltip.arcanomech.wand_mana", getMana(stack), getCapacity(stack)));
-        String spell = getSelectedSpell(stack);
-        tooltip.add(Text.translatable("tooltip.arcanomech.wand_spell", spell.isEmpty() ? "none" : spell));
+        String spellKey = getSelectedSpell(stack);
+        Text spellName = spellKey.isEmpty() ? Text.translatable("tooltip.arcanomech.wand_spell_none") : SpellRuntime.describe(SpellId.of(spellKey).id());
+        tooltip.add(Text.translatable("tooltip.arcanomech.wand_spell", spellName));
+        int cooldown = getCooldownTicks(stack);
+        if (cooldown <= 0) {
+            tooltip.add(Text.translatable("tooltip.arcanomech.wand_cooldown_ready"));
+        } else {
+            tooltip.add(Text.translatable("tooltip.arcanomech.wand_cooldown_wait", String.format("%.1f", cooldown / 20.0F)));
+        }
     }
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.CROSSBOW;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, PlayerEntity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (!world.isClient) {
+            int cooldown = getCooldownTicks(stack);
+            if (cooldown > 0) {
+                setCooldownTicks(stack, cooldown - 1);
+            }
+        }
     }
 
     @Override
@@ -95,5 +125,13 @@ public class ArcaneWandItem extends Item implements ManaToolItem {
 
     public String getSelectedSpell(ItemStack stack) {
         return stack.getOrCreateNbt().getString(SPELL_KEY);
+    }
+
+    public void setCooldownTicks(ItemStack stack, int ticks) {
+        stack.getOrCreateNbt().putInt(COOLDOWN_KEY, Math.max(0, ticks));
+    }
+
+    public int getCooldownTicks(ItemStack stack) {
+        return stack.getOrCreateNbt().getInt(COOLDOWN_KEY);
     }
 }

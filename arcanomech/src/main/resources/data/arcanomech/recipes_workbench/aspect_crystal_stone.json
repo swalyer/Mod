@@ -1,0 +1,14 @@
+{
+  "type": "arcanomech:workbench",
+  "mana_cost": 160,
+  "work_time": 100,
+  "inputs": [
+    { "item": "minecraft:coal", "count": 4 },
+    { "item": "arcanomech:ether_crystal", "count": 1 }
+  ],
+  "output": {
+    "item": "arcanomech:aspect_crystal",
+    "count": 1,
+    "nbt": "{Aspect:\"arcanomech:stone\"}"
+  }
+}

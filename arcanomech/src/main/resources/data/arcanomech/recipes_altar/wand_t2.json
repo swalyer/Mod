@@ -1,0 +1,13 @@
+{
+  "type": "arcanomech:altar",
+  "mana_cost": 3000,
+  "work_time": 400,
+  "aspects": { "arcanomech:mind": 2, "arcanomech:spark": 3 },
+  "pedestal_inputs": [
+    { "item": "arcanomech:mana_rune" },
+    { "item": "minecraft:amethyst_shard" }
+  ],
+  "center": { "item": "arcanomech:arcane_wand" },
+  "result": { "item": "arcanomech:arcane_wand_t2" },
+  "base_stability": 5
+}
