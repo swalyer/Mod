@@ -1,6 +1,7 @@
 package com.example.arcanomech.block;
 
 import com.example.arcanomech.ModContent;
+import com.example.arcanomech.energy.Balance;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockRenderType;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ManaBatteryBlock extends BlockWithEntity {
-    private static final int TRANSFER_PER_USE = 1_000;
+    private static final int TRANSFER_PER_USE = Balance.BATTERY_IO;
 
     public ManaBatteryBlock() {
         super(FabricBlockSettings.create().mapColor(MapColor.IRON_GRAY).strength(3.0F, 6.0F).requiresTool());
@@ -53,10 +54,14 @@ public class ManaBatteryBlock extends BlockWithEntity {
         if (isCrystal) {
             if (!world.isClient) {
                 int inserted = battery.insert(TRANSFER_PER_USE, false);
-                if (inserted > 0 && !player.getAbilities().creativeMode) {
-                    stack.decrement(1);
+                if (inserted > 0) {
+                    if (!player.getAbilities().creativeMode) {
+                        stack.decrement(1);
+                    }
+                    player.sendMessage(Text.literal("Mana: " + battery.getMana() + "/" + battery.getCapacity()), true);
+                } else {
+                    player.sendMessage(Text.literal("Mana Battery is full"), true);
                 }
-                player.sendMessage(Text.literal("Mana: " + battery.getMana() + "/" + battery.getCapacity()), true);
             }
             return ActionResult.SUCCESS;
         }
