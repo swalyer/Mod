@@ -6,6 +6,11 @@ public final class Balance {
     public static final int CABLE_CAPACITY = 2_000;
     public static final int CABLE_IO = 200;
 
+    public static final int CRUSHER_CAPACITY = 5_000;
+    public static final int CRUSHER_IO = 1_000;
+    public static final int CRUSHER_MANA_PER_TICK = 20;
+    public static final int CRUSHER_WORK_TIME = 200;
+
     private Balance() {
     }
 }

@@ -7,6 +7,12 @@
   "entrypoints": {
     "main": [
       "com.example.arcanomech.Arcanomech"
+    ],
+    "client": [
+      "com.example.arcanomech.client.ArcanomechClient"
+    ],
+    "fabric-gametest": [
+      "com.example.arcanomech.gametest.ManaNetworkGameTests"
     ]
   },
   "depends": {
