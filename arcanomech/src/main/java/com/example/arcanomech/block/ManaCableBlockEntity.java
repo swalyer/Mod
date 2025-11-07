@@ -47,12 +47,13 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        if (world != null && !world.isClient) {
-            refreshConnections();
+    public void setWorld(net.minecraft.world.World world) {
+        super.setWorld(world);
+        if (!world.isClient) {
+            // init once on server if needed
         }
     }
+
 
     @Override
     public int getMana() {

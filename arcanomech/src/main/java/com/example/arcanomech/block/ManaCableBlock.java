@@ -17,6 +17,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -110,11 +111,11 @@ public class ManaCableBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, PlayerEntity player, ItemStack itemStack) {
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (!world.isClient) {
             world.setBlockState(pos, updateConnections(world, pos, state), Block.NOTIFY_LISTENERS);
         }
-        super.onPlaced(world, pos, state, player, itemStack);
+        super.onPlaced(world, pos, state, placer, stack);
     }
 
     public BlockState updateConnections(World world, BlockPos pos, BlockState state) {

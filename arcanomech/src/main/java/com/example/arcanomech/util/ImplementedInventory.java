@@ -1,5 +1,6 @@
 package com.example.arcanomech.util;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -8,40 +9,41 @@ import net.minecraft.util.collection.DefaultedList;
 public interface ImplementedInventory extends Inventory {
     DefaultedList<ItemStack> getItems();
 
-    @Override
-    default int size() {
-        return getItems().size();
+    static ImplementedInventory of(DefaultedList<ItemStack> items) {
+        return new ImplementedInventory() {
+            @Override
+            public DefaultedList<ItemStack> getItems() {
+                return items;
+            }
+        };
+    }
+
+    static ImplementedInventory ofSize(int size) {
+        return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
     }
 
     @Override
+    default int size() { return getItems().size(); }
+
+    @Override
     default boolean isEmpty() {
-        for (int i = 0; i < size(); i++) {
-            if (!getStack(i).isEmpty()) {
-                return false;
-            }
-        }
+        for (ItemStack s : getItems()) if (!s.isEmpty()) return false;
         return true;
     }
 
     @Override
-    default ItemStack getStack(int slot) {
-        return getItems().get(slot);
-    }
+    default ItemStack getStack(int slot) { return getItems().get(slot); }
 
     @Override
     default ItemStack removeStack(int slot, int amount) {
-        ItemStack result = Inventories.splitStack(getItems(), slot, amount);
-        if (!result.isEmpty()) {
-            markDirty();
-        }
-        return result;
+        ItemStack res = Inventories.splitStack(getItems(), slot, amount);
+        if (!res.isEmpty()) markDirty();
+        return res;
     }
 
     @Override
     default ItemStack removeStack(int slot) {
-        ItemStack result = Inventories.removeStack(getItems(), slot);
-        markDirty();
-        return result;
+        return Inventories.removeStack(getItems(), slot);
     }
 
     @Override
@@ -54,15 +56,12 @@ public interface ImplementedInventory extends Inventory {
     }
 
     @Override
-    default void clear() {
-        getItems().clear();
-    }
+    default void clear() { getItems().clear(); }
 
     @Override
-    default void markDirty() {
-    }
+    default void markDirty() { }
 
-    static ImplementedInventory of(DefaultedList<ItemStack> items) {
-        return () -> items;
-    }
+    // ВАЖНО: даём дефолт иначе интерфейс остаётся не-функциональным
+    @Override
+    default boolean canPlayerUse(PlayerEntity player) { return true; }
 }
