@@ -13,6 +13,9 @@ import com.example.arcanomech.energy.SideConfigHolder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -98,6 +101,18 @@ public class ManaCableBlockEntity extends BlockEntity implements ManaStorage, Si
         super.readNbt(nbt);
         mana = Math.max(0, Math.min(Balance.CABLE_CAPACITY, nbt.getInt(MANA_KEY)));
         sideConfig.readNbt(nbt, SIDE_CONFIG_KEY);
+    }
+
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        NbtCompound nbt = new NbtCompound();
+        writeNbt(nbt);
+        return nbt;
     }
 
     private void tickServer(World world) {
