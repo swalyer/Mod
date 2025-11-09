@@ -37,10 +37,6 @@ public class ManaBatteryBlock extends BlockWithEntity {
         return new ManaBatteryBlockEntity(pos, state);
     }
 
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return null;
-    }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -76,4 +72,15 @@ public class ManaBatteryBlock extends BlockWithEntity {
 
         return ActionResult.PASS;
     }
+
+    @Override
+    public <T extends BlockEntity> net.minecraft.block.entity.BlockEntityTicker<T> getTicker(
+            net.minecraft.world.World world, BlockState state, net.minecraft.block.entity.BlockEntityType<T> type) {
+        return world.isClient ? null : (w, p, s, t) -> {
+            if (t instanceof com.example.arcanomech.energy.BatteryBlockEntity be) {
+                com.example.arcanomech.energy.BatteryBlockEntity.tick(w, p, s, be);
+            }
+        };
+    }
+
 }

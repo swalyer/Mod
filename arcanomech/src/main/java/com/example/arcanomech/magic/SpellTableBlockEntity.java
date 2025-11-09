@@ -1,5 +1,7 @@
 package com.example.arcanomech.magic;
 
+import com.example.arcanomech.energy.ItemStackMana;
+import com.example.arcanomech.energy.ManaOps;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,7 +75,9 @@ public class SpellTableBlockEntity extends BlockEntity implements ImplementedInv
                     }
                     BlockEntity blockEntity = world.getBlockEntity(cursor);
                     if (blockEntity instanceof ManaStorage storage) {
-                        int extracted = storage.extract(Math.min(needed, Balance.WAND_IO_STEP), false);
+                        int extracted = ManaOps.transfer(storage, new ItemStackMana(stack, wand),
+                                Math.min(Balance.WAND_IO_STEP, storage.getIoPerTick()));
+                        if (extracted > 0) { needed -= extracted; markDirty(); }
                         if (extracted > 0) {
                             int accepted = wand.insertMana(stack, extracted, false);
                             if (accepted < extracted) {
