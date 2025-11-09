@@ -1,8 +1,12 @@
 {
   "block.arcanomech.arcane_workbench": "Arcane Workbench",
+  "block.arcanomech.crusher" : "Crusher",
   "block.arcanomech.spell_table": "Spell Table",
   "block.arcanomech.altar_core": "Ritual Altar Core",
   "block.arcanomech.altar_pedestal": "Ritual Pedestal",
+  "block.arcanomech.mana_battery" : "Mana battery",
+  "block.arcanomech.mana_cable" : "Mana cable",
+  "item.arcanomech.wrench" : "Wrench",
   "item.arcanomech.arcane_wand": "Arcane Wand",
   "item.arcanomech.arcane_wand_t2": "Empowered Arcane Wand",
   "item.arcanomech.blank_rune": "Blank Rune",
