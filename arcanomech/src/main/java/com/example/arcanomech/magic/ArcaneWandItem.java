@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.arcanomech.energy.Balance;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -64,15 +65,15 @@ public class ArcaneWandItem extends Item implements ManaToolItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, PlayerEntity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (!world.isClient) {
-            int cooldown = getCooldownTicks(stack);
-            if (cooldown > 0) {
-                setCooldownTicks(stack, cooldown - 1);
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+                super.inventoryTick(stack, world, entity, slot, selected);
+                if (!world.isClient && entity instanceof PlayerEntity) {
+                        int cooldown = getCooldownTicks(stack);
+                        if (cooldown > 0) {
+                                setCooldownTicks(stack, cooldown - 1);
+                           }
+                    }
             }
-        }
-    }
 
     @Override
     public int getMana(ItemStack stack) {

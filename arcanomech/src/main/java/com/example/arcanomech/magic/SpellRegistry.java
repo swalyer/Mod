@@ -60,7 +60,7 @@ public final class SpellRegistry implements SimpleSynchronousResourceReloadListe
         Map<Identifier, SpellConfig> loaded = new LinkedHashMap<>();
         resources.forEach((resourceId, resource) -> {
             Identifier spellId = resolveSpellId(resourceId);
-            try (Resource res = resource; InputStreamReader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
+            try (java.io.InputStream in = resource.getInputStream(); java.io.InputStreamReader reader = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)) {
                 JsonElement element = JsonHelper.deserialize(reader);
                 if (!element.isJsonObject()) {
                     Arcanomech.LOGGER.warn("Skipping spell config {} because it is not a JSON object", spellId);

@@ -1,5 +1,6 @@
 package com.example.arcanomech.magic;
 
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 import com.example.arcanomech.ModContent;
@@ -176,8 +177,8 @@ public class SpellTableBlockEntity extends BlockEntity implements ImplementedInv
     }
 
     @Override
-    public void writeScreenOpeningData(PlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(getPos());
     }
 
     @Override

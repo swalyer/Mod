@@ -20,7 +20,13 @@ public class SpellScrollItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip) {
-        tooltip.add(Text.translatable("tooltip.arcanomech.spell_scroll", SpellRuntime.describe(spellId.id())));
+    public void appendTooltip(net.minecraft.item.ItemStack stack,
+                              @org.jetbrains.annotations.Nullable net.minecraft.world.World world,
+                              java.util.List<net.minecraft.text.Text> tooltip,
+                              net.minecraft.client.item.TooltipContext context) {
+        tooltip.add(net.minecraft.text.Text.translatable(
+                "tooltip.arcanomech.spell_scroll",
+                com.example.arcanomech.magic.SpellRuntime.describe(spellId.id())
+        ));
     }
 }
