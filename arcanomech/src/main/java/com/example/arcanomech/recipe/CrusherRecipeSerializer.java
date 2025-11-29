@@ -17,25 +17,22 @@ public class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe> 
         Ingredient ingredient = Ingredient.fromJson(JsonHelper.getObject(json, "ingredient"));
         JsonObject resultObject = JsonHelper.getObject(json, "result");
         ItemStack output = net.minecraft.recipe.ShapedRecipe.outputFromJson(resultObject);
-        int manaPerTick = JsonHelper.getInt(json, "mana_per_tick", Balance.CRUSHER_MANA_PER_TICK);
-        int processingTime = JsonHelper.getInt(json, "processing_time", Balance.CRUSHER_WORK_TIME);
-        return new CrusherRecipe(id, ingredient, output, manaPerTick, processingTime);
+        int workTime = JsonHelper.getInt(json, "work_time", Balance.CRUSHER_WORK_TIME);
+        return new CrusherRecipe(id, ingredient, output, workTime);
     }
 
     @Override
     public CrusherRecipe read(Identifier id, PacketByteBuf buf) {
         Ingredient ingredient = Ingredient.fromPacket(buf);
         ItemStack output = buf.readItemStack();
-        int manaPerTick = buf.readVarInt();
-        int processingTime = buf.readVarInt();
-        return new CrusherRecipe(id, ingredient, output, manaPerTick, processingTime);
+        int workTime = buf.readVarInt();
+        return new CrusherRecipe(id, ingredient, output, workTime);
     }
 
     @Override
     public void write(PacketByteBuf buf, CrusherRecipe recipe) {
         recipe.getIngredient().write(buf);
         buf.writeItemStack(recipe.getResult());
-        buf.writeVarInt(recipe.getManaPerTick());
-        buf.writeVarInt(recipe.getProcessingTime());
+        buf.writeVarInt(recipe.getWorkTime());
     }
 }

@@ -14,7 +14,8 @@ import com.example.arcanomech.energy.SideConfig;
 import com.example.arcanomech.energy.SideConfigHolder;
 import com.example.arcanomech.magic.ManaToolItem;
 import com.example.arcanomech.util.ImplementedInventory;
-import com.example.arcanomech.workbench.WorkbenchRecipeManager;
+import com.example.arcanomech.recipe.ModRecipes;
+import com.example.arcanomech.recipe.WorkbenchRecipe;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -333,7 +334,7 @@ public class ArcaneWorkbenchBlockEntity extends BlockEntity implements Implement
         for (int i = 0; i < INPUT_SLOTS; i++) {
             inventory.setStack(i, getStack(i));
         }
-        return WorkbenchRecipeManager.getInstance().getFirstMatch(inventory, world);
+        return world.getRecipeManager().getFirstMatch(ModRecipes.WORKBENCH_RECIPE_TYPE, inventory, world);
     }
 
     private boolean canAcceptResult(ItemStack result) {

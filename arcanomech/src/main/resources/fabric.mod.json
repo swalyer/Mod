@@ -6,7 +6,8 @@
   "environment": "*",
   "entrypoints": {
     "main": ["com.example.arcanomech.Arcanomech"],
-    "client": ["com.example.arcanomech.client.ArcanomechClient"]
+    "client": ["com.example.arcanomech.client.ArcanomechClient"],
+    "emi": ["com.example.arcanomech.client.compat.emi.ArcanomechEmiPlugin"]
   },
   "depends": {
     "fabricloader": ">=0.15.11",

@@ -1,0 +1,16 @@
+{
+  "center": "arcanomech:altar_core",
+  "pedestals": [
+    {"offset": [1, 0, 0], "block": "arcanomech:altar_pedestal"},
+    {"offset": [-1, 0, 0], "block": "arcanomech:altar_pedestal"},
+    {"offset": [0, 0, 1], "block": "arcanomech:altar_pedestal"},
+    {"offset": [0, 0, -1], "block": "arcanomech:altar_pedestal"}
+  ],
+  "activation_item": "arcanomech:mana_rune",
+  "cost_mana": 200,
+  "effects": {
+    "items": [
+      {"item": "arcanomech:mana_rune", "count": 1}
+    ]
+  }
+}

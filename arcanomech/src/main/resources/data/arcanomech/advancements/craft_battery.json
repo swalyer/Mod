@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "has_battery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {"items": ["arcanomech:mana_battery"]}
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  }
+}

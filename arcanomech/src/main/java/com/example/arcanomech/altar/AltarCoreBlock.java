@@ -3,6 +3,7 @@ package com.example.arcanomech.altar;
 import org.jetbrains.annotations.Nullable;
 
 import com.example.arcanomech.content.ModBlockEntities;
+import com.example.arcanomech.ritual.RitualRuntime;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -52,6 +53,9 @@ public class AltarCoreBlock extends BlockWithEntity {
             return ActionResult.CONSUME;
         }
         ItemStack held = player.getStackInHand(hand);
+        if (RitualRuntime.tryActivate(world, pos, player, held)) {
+            return ActionResult.CONSUME;
+        }
         ItemStack center = altar.getStack(AltarCoreBlockEntity.CENTER_SLOT);
         if (center.isEmpty() && !held.isEmpty()) {
             altar.setStack(AltarCoreBlockEntity.CENTER_SLOT, held.split(1));
