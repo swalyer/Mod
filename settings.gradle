@@ -1,30 +1,13 @@
 pluginManagement {
     repositories {
-        maven { url "https://maven.fabricmc.net" }
+        maven { url = 'https://maven.fabricmc.net' }
         gradlePluginPortal()
         mavenCentral()
     }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "fabric-loom") {
-                useModule("net.fabricmc:fabric-loom:${requested.version}")
-            }
-        }
-    }
     plugins {
-        id "fabric-loom" version "1.6.12"
+        id 'fabric-loom' version '1.6.12'
     }
 }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-    repositories {
-        mavenCentral()
-        maven { url "https://maven.fabricmc.net" }
-        maven { url "https://maven.terraformersmc.com/releases/" }
-        maven { url "https://api.modrinth.com/maven" }
-    }
-}
-
-rootProject.name = "Mod"
-include(":arcanomech")
+rootProject.name = 'Mod'
+include(':arcanomech')

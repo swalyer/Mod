@@ -1,7 +1,6 @@
-tasks.register("buildAll") {
-    dependsOn(":arcanomech:build")
+tasks.register('buildAll') {
+    dependsOn ':arcanomech:build'
 }
-
-tasks.register("runClient") {
-    dependsOn(":arcanomech:runClient")
+tasks.register('runClient') {
+    dependsOn ':arcanomech:runClient'
 }

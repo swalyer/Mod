@@ -71,3 +71,9 @@ tasks.withType(JavaCompile).configureEach {
 jar {
     from("LICENSE")
 }
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net' }
+    maven { url = 'https://api.modrinth.com/maven' }
+}
