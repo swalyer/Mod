@@ -1,0 +1,10 @@
+{
+  "criteria": {
+    "ritual_done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

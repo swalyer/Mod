@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "has_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {"items": ["arcanomech:arcane_wand"]}
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  }
+}

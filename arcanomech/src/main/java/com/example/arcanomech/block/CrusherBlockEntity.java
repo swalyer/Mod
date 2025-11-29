@@ -35,14 +35,12 @@ public class CrusherBlockEntity extends BlockEntity implements ManaStorage, Side
     private static final String PROGRESS_KEY = "progress";
     private static final String SIDE_CONFIG_KEY = "sideCfg";
     private static final String RECIPE_TIME_KEY = "recipeTime";
-    private static final String RECIPE_MANA_KEY = "recipeMana";
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
     private final SideConfig sideConfig = SideConfig.all(IOMode.INPUT);
     private int mana;
     private int progress;
     private int currentRecipeTime = Balance.CRUSHER_WORK_TIME;
-    private int currentManaPerTick = Balance.CRUSHER_MANA_PER_TICK;
 
     public CrusherBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CRUSHER, pos, state);
@@ -149,7 +147,6 @@ public class CrusherBlockEntity extends BlockEntity implements ManaStorage, Side
         nbt.putInt(MANA_KEY, mana);
         nbt.putInt(PROGRESS_KEY, progress);
         nbt.putInt(RECIPE_TIME_KEY, currentRecipeTime);
-        nbt.putInt(RECIPE_MANA_KEY, currentManaPerTick);
         sideConfig.writeNbt(nbt, SIDE_CONFIG_KEY);
         Inventories.writeNbt(nbt, items);
     }
@@ -160,7 +157,6 @@ public class CrusherBlockEntity extends BlockEntity implements ManaStorage, Side
         mana = Math.max(0, Math.min(Balance.CRUSHER_CAPACITY, nbt.getInt(MANA_KEY)));
         progress = Math.max(0, nbt.getInt(PROGRESS_KEY));
         currentRecipeTime = nbt.contains(RECIPE_TIME_KEY) ? nbt.getInt(RECIPE_TIME_KEY) : Balance.CRUSHER_WORK_TIME;
-        currentManaPerTick = nbt.contains(RECIPE_MANA_KEY) ? nbt.getInt(RECIPE_MANA_KEY) : Balance.CRUSHER_MANA_PER_TICK;
         sideConfig.readNbt(nbt, SIDE_CONFIG_KEY);
         Inventories.readNbt(nbt, items);
     }
@@ -201,12 +197,7 @@ public class CrusherBlockEntity extends BlockEntity implements ManaStorage, Side
             resetProgress();
             return;
         }
-        currentRecipeTime = recipe.getProcessingTime();
-        currentManaPerTick = recipe.getManaPerTick();
-        if (mana < currentManaPerTick) {
-            return;
-        }
-        updateMana(mana - currentManaPerTick);
+        currentRecipeTime = recipe.getWorkTime();
         progress++;
         if (progress >= currentRecipeTime) {
             craft(recipe, result);
@@ -254,9 +245,8 @@ public class CrusherBlockEntity extends BlockEntity implements ManaStorage, Side
             progress = 0;
             dirty = true;
         }
-        if (currentRecipeTime != Balance.CRUSHER_WORK_TIME || currentManaPerTick != Balance.CRUSHER_MANA_PER_TICK) {
+        if (currentRecipeTime != Balance.CRUSHER_WORK_TIME) {
             currentRecipeTime = Balance.CRUSHER_WORK_TIME;
-            currentManaPerTick = Balance.CRUSHER_MANA_PER_TICK;
             dirty = true;
         }
         if (dirty) {

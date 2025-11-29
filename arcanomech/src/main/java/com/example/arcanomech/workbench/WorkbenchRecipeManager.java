@@ -1,6 +1,7 @@
 package com.example.arcanomech.workbench;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -60,9 +61,13 @@ public final class WorkbenchRecipeManager implements SimpleSynchronousResourceRe
         Map<Identifier, Resource> resources = manager.findResources(DIRECTORY, path -> path.getPath().endsWith(".json"));
         Map<Identifier, WorkbenchRecipe> loaded = new LinkedHashMap<>();
         WorkbenchRecipeSerializer serializer = new WorkbenchRecipeSerializer();
-        resources.forEach((resourceId, resource) -> {
+        resources.forEach((resourceId, ignored) -> {
             Identifier recipeId = resolveRecipeId(resourceId);
-            try (java.io.InputStream in = resource.getInputStream(); java.io.InputStreamReader reader = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)) {
+            Resource resource = manager.getResource(resourceId).orElse(null);
+            if (resource == null) {
+                return;
+            }
+            try (InputStream in = resource.getInputStream(); InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                 JsonElement element = JsonHelper.deserialize(reader);
                 if (!element.isJsonObject()) {
                     Arcanomech.LOGGER.warn("Skipping workbench recipe {} because it is not a JSON object", recipeId);

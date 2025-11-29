@@ -77,6 +77,14 @@ public class ManaCableBlock extends BlockWithEntity {
     }
 
     @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
+        if (!world.isClient && !state.isOf(newState.getBlock())) {
+            com.example.arcanomech.energy.net.ManaNetworkManager.markDirty(world, pos);
+        }
+    }
+
+    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (world.isClient) {
             return null;
@@ -114,6 +122,7 @@ public class ManaCableBlock extends BlockWithEntity {
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (!world.isClient) {
             world.setBlockState(pos, updateConnections(world, pos, state), Block.NOTIFY_LISTENERS);
+            com.example.arcanomech.energy.net.ManaNetworkManager.markDirty(world, pos);
         }
         super.onPlaced(world, pos, state, placer, stack);
     }

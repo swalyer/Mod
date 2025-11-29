@@ -1,0 +1,16 @@
+{
+  "type": "arcanomech:workbench",
+  "ingredients": [
+    { "item": "minecraft:iron_ingot" },
+    { "item": "minecraft:iron_ingot" },
+    { "item": "minecraft:stick" },
+    { "item": "minecraft:stick" },
+    { "item": "minecraft:copper_ingot" },
+    { "item": "minecraft:copper_ingot" }
+  ],
+  "result": {
+    "item": "arcanomech:wrench"
+  },
+  "mana_cost": 200,
+  "work_time": 200
+}

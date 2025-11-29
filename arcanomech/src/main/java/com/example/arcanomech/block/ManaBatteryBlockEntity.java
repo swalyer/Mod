@@ -6,6 +6,8 @@ import com.example.arcanomech.energy.IOMode;
 import com.example.arcanomech.energy.ManaStorage;
 import com.example.arcanomech.energy.SideConfig;
 import com.example.arcanomech.energy.SideConfigHolder;
+import com.example.arcanomech.energy.net.ManaNetworkManager;
+import com.example.arcanomech.energy.net.ManaNode;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,8 +16,9 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class ManaBatteryBlockEntity extends BlockEntity implements ManaStorage, SideConfigHolder {
+public class ManaBatteryBlockEntity extends BlockEntity implements ManaStorage, SideConfigHolder, ManaNode {
     private static final String MANA_KEY = "mana";
     private static final String SIDE_CONFIG_KEY = "sideCfg";
 
@@ -85,6 +88,20 @@ public class ManaBatteryBlockEntity extends BlockEntity implements ManaStorage, 
     }
 
     @Override
+    public int getStored() {
+        return mana;
+    }
+
+    @Override
+    public int getMaxIoPerTick() {
+        return Balance.BATTERY_IO;
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, ManaBatteryBlockEntity battery) {
+        ManaNetworkManager.balance(world, pos);
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt(MANA_KEY, mana);
@@ -108,6 +125,30 @@ public class ManaBatteryBlockEntity extends BlockEntity implements ManaStorage, 
         NbtCompound nbt = new NbtCompound();
         writeNbt(nbt);
         return nbt;
+    }
+
+    @Override
+    public void markRemoved() {
+        super.markRemoved();
+        if (world != null) {
+            ManaNetworkManager.markDirty(world, pos);
+        }
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        if (world != null) {
+            ManaNetworkManager.markDirty(world, pos);
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (world != null) {
+            ManaNetworkManager.markDirty(world, pos);
+        }
     }
 
     private void updateMana(int newMana) {

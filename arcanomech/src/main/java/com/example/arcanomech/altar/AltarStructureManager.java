@@ -1,6 +1,7 @@
 package com.example.arcanomech.altar;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -44,9 +45,13 @@ public final class AltarStructureManager implements SimpleSynchronousResourceRel
     public void reload(ResourceManager manager) {
         Map<Identifier, AltarStructure> loaded = new LinkedHashMap<>();
         Map<Identifier, Resource> resources = manager.findResources(DIRECTORY, path -> path.getPath().endsWith(".json"));
-        resources.forEach((resourceId, resource) -> {
+        resources.forEach((resourceId, ignored) -> {
             Identifier id = resolve(resourceId);
-            try (java.io.InputStream in = resource.getInputStream(); java.io.InputStreamReader reader = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)) {
+            Resource resource = manager.getResource(resourceId).orElse(null);
+            if (resource == null) {
+                return;
+            }
+            try (InputStream in = resource.getInputStream(); InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                 JsonElement element = JsonHelper.deserialize(reader);
                 if (!element.isJsonObject()) {
                     Arcanomech.LOGGER.warn("Invalid altar structure {}", id);

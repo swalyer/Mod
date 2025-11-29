@@ -17,7 +17,8 @@ import com.example.arcanomech.magic.spells.BlinkSpell;
 import com.example.arcanomech.magic.spells.WardSpell;
 import com.example.arcanomech.network.NetworkHandler;
 import com.example.arcanomech.recipe.ModRecipes;
-import com.example.arcanomech.workbench.WorkbenchRecipeManager;
+import com.example.arcanomech.ritual.RitualManager;
+import com.example.arcanomech.commands.ManaInfoCommand;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -42,28 +43,30 @@ public class Arcanomech implements ModInitializer {
         registry.register(new BlinkSpell(new Identifier(MOD_ID, "blink")));
         registry.register(new ArcBoltSpell(new Identifier(MOD_ID, "arc_bolt")));
         registry.register(new WardSpell(new Identifier(MOD_ID, "ward")));
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(WorkbenchRecipeManager.getInstance());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(SpellRegistry.getInstance());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(AspectRegistry.getInstance());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(AspectSourceManager.getInstance());
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(AltarStructureManager.getInstance());
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(WorkbenchRecipeManager.getInstance());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(RitualManager.getInstance());
         NetworkHandler.registerServer();
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-                CommandManager.literal(MOD_ID)
-                        .requires(source -> source.hasPermissionLevel(2))
-                        .then(CommandManager.literal("debug")
-                                .then(CommandManager.literal("on").executes(context -> {
-                                    DebugConfig.setEnabled(true);
-                                    context.getSource().sendFeedback(() -> Text.literal("Arcanomech debug logging enabled"), true);
-                                    return 1;
-                                }))
-                                .then(CommandManager.literal("off").executes(context -> {
-                                    DebugConfig.setEnabled(false);
-                                    context.getSource().sendFeedback(() -> Text.literal("Arcanomech debug logging disabled"), true);
-                                    return 1;
-                                }))
-                        )));
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            dispatcher.register(
+                    CommandManager.literal(MOD_ID)
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .then(CommandManager.literal("debug")
+                                    .then(CommandManager.literal("on").executes(context -> {
+                                        DebugConfig.setEnabled(true);
+                                        context.getSource().sendFeedback(() -> Text.literal("Arcanomech debug logging enabled"), true);
+                                        return 1;
+                                    }))
+                                    .then(CommandManager.literal("off").executes(context -> {
+                                        DebugConfig.setEnabled(false);
+                                        context.getSource().sendFeedback(() -> Text.literal("Arcanomech debug logging disabled"), true);
+                                        return 1;
+                                    }))
+                            ));
+            ManaInfoCommand.register(dispatcher, registryAccess);
+        });
         LOGGER.info("Arcanomech loaded");
     }
 

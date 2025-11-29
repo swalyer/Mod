@@ -1,0 +1,19 @@
+{
+  "center": "arcanomech:altar_core",
+  "pedestals": [
+    {"offset": [1, 0, 0], "block": "arcanomech:altar_pedestal"},
+    {"offset": [-1, 0, 0], "block": "arcanomech:altar_pedestal"},
+    {"offset": [0, 0, 1], "block": "arcanomech:altar_pedestal"},
+    {"offset": [0, 0, -1], "block": "arcanomech:altar_pedestal"}
+  ],
+  "activation_item": "arcanomech:mana_rune",
+  "inputs": [
+    {"item": "arcanomech:mana_rune"},
+    {"item": "minecraft:glowstone_dust"}
+  ],
+  "mana_cost": 200,
+  "result": {
+    "item": "arcanomech:mana_rune",
+    "count": 1
+  }
+}

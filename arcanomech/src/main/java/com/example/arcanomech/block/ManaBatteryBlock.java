@@ -37,6 +37,22 @@ public class ManaBatteryBlock extends BlockWithEntity {
         return new ManaBatteryBlockEntity(pos, state);
     }
 
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
+        if (!world.isClient && !state.isOf(newState.getBlock())) {
+            com.example.arcanomech.energy.net.ManaNetworkManager.markDirty(world, pos);
+        }
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        if (!world.isClient) {
+            com.example.arcanomech.energy.net.ManaNetworkManager.markDirty(world, pos);
+        }
+    }
+
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -77,8 +93,8 @@ public class ManaBatteryBlock extends BlockWithEntity {
     public <T extends BlockEntity> net.minecraft.block.entity.BlockEntityTicker<T> getTicker(
             net.minecraft.world.World world, BlockState state, net.minecraft.block.entity.BlockEntityType<T> type) {
         return world.isClient ? null : (w, p, s, t) -> {
-            if (t instanceof com.example.arcanomech.energy.BatteryBlockEntity be) {
-                com.example.arcanomech.energy.BatteryBlockEntity.tick(w, p, s, be);
+            if (t instanceof ManaBatteryBlockEntity be) {
+                ManaBatteryBlockEntity.tick(w, p, s, be);
             }
         };
     }

@@ -17,15 +17,13 @@ public class CrusherRecipe implements Recipe<SimpleInventory> {
     private final Identifier id;
     private final Ingredient ingredient;
     private final ItemStack result;
-    private final int manaPerTick;
-    private final int processingTime;
+    private final int workTime;
 
-    public CrusherRecipe(Identifier id, Ingredient ingredient, ItemStack result, int manaPerTick, int processingTime) {
+    public CrusherRecipe(Identifier id, Ingredient ingredient, ItemStack result, int workTime) {
         this.id = id;
         this.ingredient = ingredient;
         this.result = result;
-        this.manaPerTick = manaPerTick <= 0 ? Balance.CRUSHER_MANA_PER_TICK : manaPerTick;
-        this.processingTime = processingTime <= 0 ? Balance.CRUSHER_WORK_TIME : processingTime;
+        this.workTime = workTime <= 0 ? Balance.CRUSHER_WORK_TIME : workTime;
     }
 
     @Override
@@ -76,11 +74,7 @@ public class CrusherRecipe implements Recipe<SimpleInventory> {
         return result;
     }
 
-    public int getManaPerTick() {
-        return manaPerTick;
-    }
-
-    public int getProcessingTime() {
-        return processingTime;
+    public int getWorkTime() {
+        return workTime;
     }
 }
